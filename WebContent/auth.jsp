@@ -1,79 +1,59 @@
+<%@page import="hash.PasswordHash"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
+<jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
+<jsp:useBean id="db" class="db.DBConnection" scope="session" />
 <%@ page language="java"
 	import="java.sql.*, javax.sql.*, javax.naming.*" errorPage=""%>
-<%  
-    if (request.getParameter("SenecaLDAPBBBLogin") != null && request.getParameter("SenecaLDAPBBBLoginPass") != null) {
+<%
+	// Gets inserted user and password
+	String userID = request.getParameter("SenecaLDAPBBBLogin");
+	String password = request.getParameter("SenecaLDAPBBBLoginPass");
 
-        if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"), request.getParameter("SenecaLDAPBBBLoginPass"))) {
-            if (ldap.getAccessLevel() < 0) {
-                response.sendRedirect("banned.jsp");
-            } else {
-                if (ldap.getAccessLevel() == 10) {
-                    session.setAttribute("iUserType", "student");
-                    session.setAttribute("iUserLevel", "student");
-                } else if (ldap.getAccessLevel() == 20) {
-                    session.setAttribute("iUserType", "employee");
-                    session.setAttribute("iUserLevel", "employee");
-                } else if (ldap.getAccessLevel() == 30) {
-                    session.setAttribute("iUserType", "professor");
-                    session.setAttribute("iUserLevel", "professor");
-                }
-                session.setAttribute("sUserName", ldap.getGivenName());
-                session.setAttribute("sUserID", ldap.getUserID());
-                session.setAttribute("isLDAP", "true");
-                response.sendRedirect("calendar.jsp");
-            }
-        } else {
-            Connection conn = null;
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/db", "senecaBBB", "db");//jdbc:mysql://localhost:3309/db", "senecaBBB", "db");//jdbc:derby://localhost:1527/usermaster", "db", "db"
+	// Checks if user and password fields are not empty
+	if (userID != null && password != null) {
 
-            ResultSet rsdoLogin = null;
-            PreparedStatement psdoLogin = null;
+		// Checks if user is registed on Seneca's database
+		if (ldap.search(request.getParameter("SenecaLDAPBBBLogin"),	request.getParameter("SenecaLDAPBBBLoginPass"))) {
+			if (ldap.getAccessLevel() < 0) {
+				response.sendRedirect("banned.jsp");
+			} else {
+				if (ldap.getAccessLevel() == 10) {
+					session.setAttribute("iUserType", "student");
+					session.setAttribute("iUserLevel", "student");
+				} else if (ldap.getAccessLevel() == 20) {
+					session.setAttribute("iUserType", "employee");
+					session.setAttribute("iUserLevel", "employee");
+				} else if (ldap.getAccessLevel() == 30) {
+					session.setAttribute("iUserType", "professor");
+					session.setAttribute("iUserLevel", "professor");
+				}
+				session.setAttribute("sUserID", ldap.getUserID());
+				session.setAttribute("sUserName", ldap.getGivenName());
+				session.setAttribute("isLDAP", "true");
+				response.sendRedirect("calendar.jsp");
+			}
+		}
+		// Checks if user is registed on database 
+		else if (hash.validatePassword(password.toCharArray(), userID)) {
 
-            String sUserID = request.getParameter("SenecaLDAPBBBLogin");
-            String sPassword = request.getParameter("SenecaLDAPBBBLoginPass");
-            String message = "User login successfully ";
-            
-            try {
-                String sqlOption = "SELECT * FROM usermaster where sUserID = ? and sPassword = ?";
-                psdoLogin = conn.prepareStatement(sqlOption);
-                psdoLogin.setString(1, sUserID);
-                psdoLogin.setString(2, sPassword);
+			/* User is authenticated */
 
-                rsdoLogin = psdoLogin.executeQuery();
+				ResultSet rsdoLogin = db.getUserInfo(userID);
+				if (rsdoLogin.next()) {
+					session.setAttribute("sUserID", userID);
+					session.setAttribute("sUserName", rsdoLogin.getString("nu_name") + " " + rsdoLogin.getString("nu_lastname"));
+					session.setAttribute("iUserLevel", rsdoLogin.getString("pr_name"));
+					session.setAttribute("iUserType", rsdoLogin.getString("pr_name"));
+					session.setAttribute("isLDAP", "false");
+					response.sendRedirect("calendar.jsp");
+					String message = "User login successfully.";
+				} else {
+					String message = "Invalid username and/or password.";
+					response.sendRedirect("index.jsp?error=" + message);
+				}
 
-                if (rsdoLogin.next()) {
-                    String sUserName = rsdoLogin.getString("sFirstName") + " " + rsdoLogin.getString("sLastName");
-                    session.setAttribute("sUserID", rsdoLogin.getString("sUserID"));
-                    session.setAttribute("iUserType", rsdoLogin.getString("iUserType"));
-                    session.setAttribute("iUserLevel", rsdoLogin.getString("iUserLevel"));
-                    session.setAttribute("sUserName", sUserName);
-                    session.setAttribute("isLDAP", "false");
-                    response.sendRedirect("calendar.jsp");
-                } else {
-                    message = "Invalid username or password";
-                    response.sendRedirect("index.jsp?error=" + message);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            /// Close object and connection
-            try {
-                if (psdoLogin != null) {
-                    psdoLogin.close();
-                }
-                if (rsdoLogin != null) {
-                    rsdoLogin.close();
-                }
-
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+		}
+	} else {
+		String message = "Invalid username and/or password.";
+	}
 %>
