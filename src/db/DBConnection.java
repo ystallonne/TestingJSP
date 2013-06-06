@@ -2,12 +2,16 @@ package db;
 
 import java.sql.*;
 
-public class DBConnection {
 
+public class DBConnection {
+	
+	private static DBConnection dbConnectionSingleton = new DBConnection();
+	
 	PreparedStatement psdoLogin = null;
 	ResultSet resultSet = null;
 	Connection conn = null;
-
+	
+	/** A private Constructor prevents any other class from instantiating. */
 	public DBConnection() {
 		// Establishes a connection with database
 		try {
@@ -20,18 +24,23 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		try {
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3309/db", "senecaBBB", "db");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/db", "senecaBBB", "db");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	/** Static 'instance' method */
+	public static DBConnection getInstance() {
+	    return dbConnectionSingleton;
+	  }
 
 	public Connection getConnection() {
 		return conn;
 	}
 
 	public ResultSet queryDB(String queryString) {
+		// Executes all SQLQueries
 		try {
 			psdoLogin = conn.prepareStatement(queryString);
 		} catch (SQLException e) {
@@ -82,7 +91,9 @@ public class DBConnection {
 	}
 
 	public ResultSet getSaltAndHash(String userID) {
-		String sqlQuery = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash FROM non_ldap_user where bu_id = '" + userID + "'";
+		String sqlQuery = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash "
+				+ "FROM non_ldap_user "
+				+ "WHERE bu_id = '" + userID + "'";
 		return this.queryDB(sqlQuery);
 	}
 
