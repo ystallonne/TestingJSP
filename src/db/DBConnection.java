@@ -79,6 +79,7 @@ public class DBConnection {
 		}
 	}
 
+	/** Queries */
 	public ResultSet getUserInfo(String userID) {
 		String sqlQuery = "SELECT bbb_user.*, non_ldap_user.*, user_role.pr_name, user_role.ur_rolemask "
 				+ "FROM bbb_user "
@@ -94,6 +95,20 @@ public class DBConnection {
 		String sqlQuery = "SELECT non_ldap_user.nu_salt, non_ldap_user.nu_hash "
 				+ "FROM non_ldap_user "
 				+ "WHERE bu_id = '" + userID + "'";
+		return this.queryDB(sqlQuery);
+	}
+	
+	public ResultSet getUsers(String sValue) {		
+		String sqlQuery = "SELECT bbb_user.*, non_ldap_user.*, user_role.pr_name, user_role.ur_rolemask "
+				+ "FROM bbb_user "
+				+ "INNER JOIN non_ldap_user "
+				+ "ON bbb_user.bu_id = non_ldap_user.bu_id "
+				+ "INNER JOIN user_role "
+				+ "ON bbb_user.ur_id = user_role.ur_id "
+				+ "WHERE user_role.ur_rolemask = '" + sValue + "'";
+				
+				//"SELECT * FROM usermaster WHERE"
+                //+ " \"iUserType\"!=\'admin\' AND \"iUserType\"!=\'superadmin\' ORDER BY \"" + sValue + "\"";
 		return this.queryDB(sqlQuery);
 	}
 

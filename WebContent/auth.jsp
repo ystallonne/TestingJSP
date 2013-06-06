@@ -51,7 +51,6 @@
 					String message = "Invalid username and/or password.";
 					response.sendRedirect("index.jsp?error=" + message);
 				}
-
 		}
 	} else {
 		String message = "Invalid username and/or password.";

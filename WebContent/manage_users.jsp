@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="db" class="db.DBConnection" scope="session" />
 <!DOCTYPE html>
 <html>
     <head>
@@ -58,20 +59,13 @@
                                 <td>Modify</td>
                             </tr>
                             <%
-                                Connection conn = null;
-                                Class.forName("com.mysql.jdbc.Driver").newInstance();
-                                conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/db", "senecaBBB", "db");
-
-                                ResultSet rsdoLogin = null;
-                                PreparedStatement psdoLogin = null;
-
                                 try {
-                                    String sqlOption = "SELECT * FROM usermaster WHERE"
-                                            + " \"iUserType\"!=\'admin\' AND \"iUserType\"!=\'superadmin\' ORDER BY \"" + sValue + "\"";
-
-                                    psdoLogin = conn.prepareStatement(sqlOption);
-                                    rsdoLogin = psdoLogin.executeQuery();
-
+									//////////////////////////////////////////////////////
+                                	/* this table doesn't exist!!!*/
+                                	//////////////////////////////////////////////////////
+                                    
+                                    ResultSet rsdoLogin = db.getUsers(sValue);
+                                    
                                     while (rsdoLogin.next()) {
                                         out.write("<tr>");
                                         String sUserName = rsdoLogin.getString("sUserId");
@@ -94,21 +88,6 @@
                                         out.write("</td>");
                                         out.write("<td><a href=\"edit_user.jsp?create=false&user=" + sUserName + "&fname=" + sFirst + "&lname=" + sLast + "&email=" + sEmail + "&usertype=" + iUserType + "\">Edit</a></td>");
                                         out.write("</tr>");
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                /// close object and connection
-                                try {
-                                    if (psdoLogin != null) {
-                                        psdoLogin.close();
-                                    }
-                                    if (rsdoLogin != null) {
-                                        rsdoLogin.close();
-                                    }
-                                    if (conn != null) {
-                                        conn.close();
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
