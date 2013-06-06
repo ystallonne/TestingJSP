@@ -113,7 +113,7 @@
             }
             function hideSched(num) {
                 if (num == 1)
-                    var p = confirm("This will change the schedule for every event. Continue?")
+                    var p = confirm("This will change the schedule for every event. Continue?");
                 if (p || num == 0)
                 {
                     document.getElementById("schedule").style.visibility = "hidden";

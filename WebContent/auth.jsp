@@ -3,7 +3,7 @@
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
 <jsp:useBean id="db" class="db.DBConnection" scope="session" />
 <%@ page language="java"
-	import="java.sql.*, javax.sql.*, javax.naming.*" errorPage=""%>
+	import="java.sql.*" errorPage=""%>
 <%
 	// Gets inserted user and password
 	String userID = request.getParameter("SenecaLDAPBBBLogin");
