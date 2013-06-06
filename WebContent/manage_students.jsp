@@ -48,7 +48,7 @@
                     <td>Stanica</td>
                     <td>robert.stanica@senecacollege.ca</td>
                     <td>05955732</td>
-                    <td><a href="edit_student.jsp?fname=Robert&lname=Stanica&email=robert.stanica@senecacollege.ca&id=05955732&create=false">Edit</a></br><button type="button" onclick="deleteRow(1)">Delete</button></td>
+                    <td><a href="edit_student.jsp?fname=Robert&lname=Stanica&email=robert.stanica@senecacollege.ca&id=05955732&create=false">Edit</a><button type="button" onclick="deleteRow(1)">Delete</button></td>
                     <td><input type="checkbox" value="banned">Banned</td>
                 </tr>
                 <tr>
@@ -56,11 +56,11 @@
                     <td>Pilkey</td>
                     <td>chad.pilkey@senecacollege.ca</td>
                     <td>15933738</td>
-                    <td><a href="edit_student.jsp?fname=Chad&lname=Pilkey&email=chad.pilkey@senecacollege.ca&id=15933738&create=false">Edit</a></br><button type="button" onclick="deleteRow(1)">Delete</button></td>
+                    <td><a href="edit_student.jsp?fname=Chad&lname=Pilkey&email=chad.pilkey@senecacollege.ca&id=15933738&create=false">Edit</a><button type="button" onclick="deleteRow(1)">Delete</button></td>
                     <td><input type="checkbox" value="banned">Banned</td>
                 </tr>
             </table>
-            <a href="edit_student.jsp?create=true"><button type="button" >Add Student</button></a></br></br>
+            <a href="edit_student.jsp?create=true"><button type="button" >Add Student</button></a>
             Upload student list <input type="file" id="input">
         </div>
     </body>

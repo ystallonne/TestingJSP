@@ -302,12 +302,12 @@
                                         <input name="endson" type="radio" title="Ends never" />
                                         <label title="Ends never">Never</label>
                                     </span>
-                                    <span></br>
+                                    <span>
                                         <input type="radio" checked="checked" title="Ends after a number of occurrences" />
                                         <label title="Ends after a number of occurrences">After <input id=":2l.endson_count_input" size="3" value="1" title="Occurrences" />
                                             occurrences</label>
                                     </span>
-                                    <span></br>
+                                    <span>
                                         <label title="Ends on a specified date">On <input size="10" value="" title="Specified date" autocomplete="off" type="date"/></label>
                                     </span>
                                 </td>

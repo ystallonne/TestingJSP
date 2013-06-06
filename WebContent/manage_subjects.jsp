@@ -89,12 +89,12 @@
                                 <td><%=status.equals("1") ? sname: "Programming Fundamentals using C"%></td>
                                 <td>
                                     <div id="sub1">
-                                        A</a><br/>
+                                    	A<br/>
                                         B<br/>
                                     </div>
                                     <input type="button" value="Add Section" id="button" onclick="addSection('sub1', 'button')">
                                 </td>
-                                <td><a href="edit_subject.jsp?scode=<%=status.equals("1") && !scode.equals("")? scode: "BTP100"%>&sname=<%=status.equals("1") && !sname.equals("") ? sname: "Programming Fundamentals using C"%>&professor=<%=professor%>&status=1&create=false">Edit Subject</a></br><button type="button" onclick="deleteRow(1)">Delete</button></td>
+                                <td><a href="edit_subject.jsp?scode=<%=status.equals("1") && !scode.equals("")? scode: "BTP100"%>&sname=<%=status.equals("1") && !sname.equals("") ? sname: "Programming Fundamentals using C"%>&professor=<%=professor%>&status=1&create=false">Edit Subject</a><button type="button" onclick="deleteRow(1)">Delete</button></td>
                             </tr>
                             <tr>
                                 <td><%=status.equals("2") ? scode: "BTC140"%></td>
@@ -105,7 +105,7 @@
                                     </div>
                                     <input type="button" value="Add Section" id="button2" onclick="addSection('sub2', 'button2')">
                                 </td>
-                                <td><a href="edit_subject.jsp?scode=<%=status.equals("2") && !scode.equals("") ? scode: "BTC140"%>&sname=<%=status.equals("2") && !sname.equals("") ? sname: "Critical Thinking and Writing"%>&professor=<%=professor%>&status=2&create=false">Edit Subject</a></br><button type="button" onclick="deleteRow(1)">Delete</button></td>
+                                <td><a href="edit_subject.jsp?scode=<%=status.equals("2") && !scode.equals("") ? scode: "BTC140"%>&sname=<%=status.equals("2") && !sname.equals("") ? sname: "Critical Thinking and Writing"%>&professor=<%=professor%>&status=2&create=false">Edit Subject</a><button type="button" onclick="deleteRow(1)">Delete</button></td>
                             </tr>
                             <%
                                 if (created.equals("true")) {
@@ -118,7 +118,7 @@
                                 }
                             %>
                         </table>
-                        <a href="edit_subject.jsp?create=true&professor=<%=professor%>"><button type="button" >Add Subject</button></a></br></br>
+                        <a href="edit_subject.jsp?create=true&professor=<%=professor%>"><button type="button" >Add Subject</button></a>
                         Upload subject list <input type="file" id="input">
                     </div>
                 </div>
