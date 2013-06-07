@@ -1,7 +1,7 @@
+<%@page import="db.DBConnection"%>
 <%@page import="hash.PasswordHash"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
-<jsp:useBean id="db" class="db.DBConnection" scope="session" />
 <%@ page language="java"
 	import="java.sql.*" errorPage=""%>
 <%
@@ -37,8 +37,8 @@
 		else if (hash.validatePassword(password.toCharArray(), userID)) {
 
 			/* User is authenticated */
-
-				ResultSet rsdoLogin = db.getUserInfo(userID);
+				DBConnection conn = DBConnection.getInstance();
+				ResultSet rsdoLogin = conn.getUserInfo(userID);
 				if (rsdoLogin.next()) {
 					session.setAttribute("sUserID", userID);
 					session.setAttribute("sUserName", rsdoLogin.getString("nu_name") + " " + rsdoLogin.getString("nu_lastname"));
@@ -51,6 +51,7 @@
 					String message = "Invalid username and/or password.";
 					response.sendRedirect("index.jsp?error=" + message);
 				}
+				//conn.closeConnection();
 		}
 	} else {
 		String message = "Invalid username and/or password.";

@@ -1,9 +1,13 @@
+<%@page import="db.DBConnection"%>
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
     session.invalidate();
     String error = request.getParameter("error");
     if (error == null || error == "null") {
         error = "";
+    } else {
+    	DBConnection.getInstance().closeConnection();
+    	System.out.println("error=Logged out");
     }
 %>
 <!DOCTYPE html>
@@ -35,9 +39,12 @@
         </script>
 </head>
 <body>
+	<!-- Print 'error' on the screen -->
 	<div id="error">
 		<h2><%=error%></h2>
 	</div>
+	
+	<!-- Login form -->
 	<form id="login" name="formLogin" action="auth.jsp"
 		onSubmit="return validate();" method="post">
 		<h1>Log In</h1>

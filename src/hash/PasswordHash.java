@@ -60,7 +60,7 @@ public class PasswordHash {
      * Validates a password using a hash.
      *
      * @param   password    the password to check
-     * @param   goodHash    the hash of the valid password
+     * @param   userID		the id used to get a respective salt and hash in the database
      * @return              true if the password is correct, false if not
      */
 	public boolean validatePassword(char[] password, String userID)
@@ -71,7 +71,7 @@ public class PasswordHash {
 		byte[] salt = null;
 		String hash = "";
 
-		DBConnection conn = new DBConnection();
+		DBConnection conn = DBConnection.getInstance();
 
 		try {
 			ResultSet resultSet = conn.getSaltAndHash(userID);
@@ -80,13 +80,19 @@ public class PasswordHash {
 				salt = resultSet.getString("nu_salt").getBytes();
 				hash = resultSet.getString("nu_hash");
 			}
-			System.out.println("HASH AND SALT FROM DB: " + salt + "  " + hash);
 			tempHash = createHash(password, salt);
-			System.out.println("TEMP HASH: " + tempHash.toString());
+			
+			//System.out.println("HASH AND SALT FROM DB: " + salt + "  " + hash);
+			//System.out.println("TEMP HASH: " + tempHash.toString());
 		} catch (Exception error) {
 			error.printStackTrace();
 		}
-
+		
+		ResultSet connections = conn.getNumberOfConnections();
+		while(connections.next()){
+			System.out.println(connections.getRow());
+		}
+		//conn.closeConnection();
 		return hash.equals(tempHash);
 	}
 
@@ -101,7 +107,7 @@ public class PasswordHash {
     /**
      * Validates a password using a hash.
      *
-     * @param   password    the password to check
+     * @pa ram   password    the password to check
      * @param   goodHash    the hash of the valid password
      * @return              true if the password is correct, false if not
      */

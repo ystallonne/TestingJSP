@@ -2,7 +2,6 @@ package db;
 
 import java.sql.*;
 
-
 public class DBConnection {
 	
 	private static DBConnection dbConnectionSingleton = new DBConnection();
@@ -24,6 +23,7 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		try {
+			// Information regarding database: its location, user name, and password for accessing it.
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3309/db", "senecaBBB", "db");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -35,6 +35,10 @@ public class DBConnection {
 	    return dbConnectionSingleton;
 	  }
 
+	/** In case the connection is necessary to be handled elsewhere
+	 *
+	 * @return			connection created and used only in this class
+	 */
 	public Connection getConnection() {
 		return conn;
 	}
@@ -54,22 +58,9 @@ public class DBConnection {
 		return resultSet;
 	}
 
+	/** Closes objects and connection */
 	public void closeConnection() {
-		// Closes objects and connection
-		if (psdoLogin != null) {
-			try {
-				psdoLogin.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		if (resultSet != null) {
-			try {
-				resultSet.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+
 		if (conn != null) {
 			try {
 				conn.close();
@@ -105,10 +96,16 @@ public class DBConnection {
 				+ "ON bbb_user.bu_id = non_ldap_user.bu_id "
 				+ "INNER JOIN user_role "
 				+ "ON bbb_user.ur_id = user_role.ur_id "
+				+ "WHERE bbb_user.bu_issuper = 'false' "
 				+ "ORDER BY '" + sValue + "'";
 				
 				//"SELECT * FROM usermaster WHERE"
                 //+ " \"iUserType\"!=\'admin\' AND \"iUserType\"!=\'superadmin\' ORDER BY \"" + sValue + "\"";
+		return this.queryDB(sqlQuery);
+	}
+	
+	public ResultSet getNumberOfConnections() {
+		String sqlQuery = "SHOW PROCESSLIST";
 		return this.queryDB(sqlQuery);
 	}
 
