@@ -105,7 +105,7 @@ public class DBConnection {
 				+ "ON bbb_user.bu_id = non_ldap_user.bu_id "
 				+ "INNER JOIN user_role "
 				+ "ON bbb_user.ur_id = user_role.ur_id "
-				+ "WHERE user_role.ur_rolemask = '" + sValue + "'";
+				+ "ORDER BY '" + sValue + "'";
 				
 				//"SELECT * FROM usermaster WHERE"
                 //+ " \"iUserType\"!=\'admin\' AND \"iUserType\"!=\'superadmin\' ORDER BY \"" + sValue + "\"";
