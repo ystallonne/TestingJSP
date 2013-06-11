@@ -1,16 +1,13 @@
 package db;
 
-import java.sql.*;
-import snaq.db.ConnectionPool;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-//import javax.naming.Context;
-//import javax.naming.InitialContext;
-//import javax.naming.NamingException;
-//import org.apache.tomcat.jdbc.pool.DataSource;
-//import org.apache.tomcat.jdbc.pool.PoolProperties;
-//import java.sql.Statement;
-//import javax.sql.DataSource;
-//import org.apache.tomcat.jdbc.pool.ConnectionPool;
+import snaq.db.ConnectionPool;
 
 public class DBConnection {
 	
@@ -63,8 +60,6 @@ public class DBConnection {
         } finally {
         	pool.registerShutdownHook();
         }
-        
-        
 	}
 
 /*
@@ -149,7 +144,7 @@ public class DBConnection {
 	 * @throws SQLException
 	 */
 	public void closeConnection() throws SQLException {
-		if (conn != null) {
+		if ((null != conn) && (!conn.isClosed())) {
 			try {
 				conn.close();
 			} catch (SQLException e) {
