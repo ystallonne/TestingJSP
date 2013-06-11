@@ -1,14 +1,15 @@
 <%@page import="db.DBConnection"%>
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
 <%
-    session.invalidate();
-    String error = request.getParameter("error");
-    if (error == null || error == "null") {
-        error = "";
-    } else {
-    	DBConnection.getInstance().closeConnection();
-    	System.out.println("error=Logged out");
-    }
+	session.invalidate();
+	String error = request.getParameter("error");
+	if (error == null || error == "null") {
+		error = "";
+	} else {
+		//DBConnection.getInstance().closeConnection();
+		//DBConnection conn = DBConnection.getInstance();
+		System.out.println("error=Logged out");
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -17,34 +18,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>User Login Page</title>
 <script type="text/javascript">
-            function trim(s)
-            {
-                return s.replace(/^\s*/, "").replace(/\s*$/, "");
-            }
-            function validate()
-            {
-                if (trim(document.formLogin.username.value) == "")
-                {
-                    alert("Login empty");
-                    document.formLogin.username.focus();
-                    return false;
-                }
-                else if (trim(document.formLogin.password.value) == "")
-                {
-                    alert("Password empty");
-                    document.formLogin.password.focus();
-                    return false;
-                }
-            }
-        </script>
+	function trim(s) {
+		return s.replace(/^\s*/, "").replace(/\s*$/, "");
+	}
+	function validate() {
+		if (trim(document.formLogin.username.value) == "") {
+			alert("Login empty");
+			document.formLogin.username.focus();
+			return false;
+		} else if (trim(document.formLogin.password.value) == "") {
+			alert("Password empty");
+			document.formLogin.password.focus();
+			return false;
+		}
+	}
+</script>
 </head>
 <body>
-	<!-- Print 'error' on the screen -->
+	<!-- Prints 'error' on the screen. -->
 	<div id="error">
 		<h2><%=error%></h2>
 	</div>
-	
-	<!-- Login form -->
+
+	<!-- Login form. -->
 	<form id="login" name="formLogin" action="auth.jsp"
 		onSubmit="return validate();" method="post">
 		<h1>Log In</h1>
