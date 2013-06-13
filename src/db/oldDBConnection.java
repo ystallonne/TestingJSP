@@ -11,9 +11,9 @@ import dao.UserDAO;
 
 import snaq.db.ConnectionPool;
 
-public class DBConnection {
+public class oldDBConnection {
 	
-	private static DBConnection dbConnectionSingleton = new DBConnection();
+	private static oldDBConnection dbConnectionSingleton = new oldDBConnection();
 	
 	private static Connection conn;
 	private static ConnectionPool pool;
@@ -25,7 +25,7 @@ public class DBConnection {
 	 * 
 	 * A private Constructor prevents any other class from instantiating.
 	 */
-	private DBConnection() {
+	private oldDBConnection() {
 		Class<?> c = null;
 		try {
 			c = Class.forName("com.mysql.jdbc.Driver");
@@ -56,11 +56,7 @@ public class DBConnection {
         
         try {
         	pool = new ConnectionPool(name, minPool, maxPool, maxSize, idleTimeout, url, username, password);
-        	try {
-				conn = pool.getConnection(idleTimeout);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+        	//conn = pool.getConnection(idleTimeout);
         } finally {
         	pool.registerShutdownHook();
         }
@@ -110,7 +106,7 @@ public class DBConnection {
 	/**
 	 * Singleton static 'instance' method.
 	 */
-	public static DBConnection getInstance() {
+	public static oldDBConnection getInstance() {
 	    return dbConnectionSingleton;
 	  }
 
@@ -119,7 +115,7 @@ public class DBConnection {
 	 *
 	 * @return connection
 	 */
-	public static Connection getConnection() {
+	public Connection getConnection() {
 		return conn;
 	}
 	
@@ -199,7 +195,7 @@ public class DBConnection {
 	/**
 	 * Selects all users.
 	 */
-	public ResultSet getUsers(String sValue) {
+	public ResultSet getUsers(String sValue) {		
 		String sqlQuery = "SELECT bbb_user.*, non_ldap_user.*, user_role.pr_name, user_role.ur_rolemask "
 				+ "FROM bbb_user "
 				+ "INNER JOIN non_ldap_user "
@@ -217,7 +213,7 @@ public class DBConnection {
 	public ResultSet getNumberOfConnections() {
 		
 		UserDAO user = new UserDAO();
-		System.out.println("tabela " + user.getCount("non_ldap_user"));
+		System.out.println(user.getCount("non_ldap_user"));
 		
 		String sqlQuery = "SHOW PROCESSLIST";
 		return this.executeQueryDBConnection(sqlQuery);

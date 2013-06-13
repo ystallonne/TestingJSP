@@ -2,6 +2,7 @@
 <%@page import="hash.PasswordHash"%>
 <jsp:useBean id="ldap" class="ldap.LDAPAuthenticate" scope="session" />
 <jsp:useBean id="hash" class="hash.PasswordHash" scope="session" />
+
 <%@ page language="java" import="java.sql.*" errorPage=""%>
 <%
 	// Gets inserted user and password.

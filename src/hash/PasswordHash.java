@@ -90,10 +90,11 @@ public class PasswordHash {
 
 		// DBConnection conn = new DBConnection();
 		// conn.getDbConnection();
-		DBConnection conn = DBConnection.getInstance();
+		//DBConnection conn = DBConnection.getInstance();
+		DBConnection.openConnection();
 		System.out.println(this.createRandomSalt());
 		try {
-			ResultSet resultSet = conn.getSaltAndHash(userID);
+			ResultSet resultSet = DBConnection.getInstance().getSaltAndHash(userID);
 			if (resultSet.next()) {
 				// Gets salt and hash from database
 				salt = resultSet.getString("nu_salt").getBytes();
@@ -107,7 +108,7 @@ public class PasswordHash {
 		}
 
 		// Number of Connections
-		ResultSet connections = conn.getNumberOfConnections();
+		ResultSet connections = DBConnection.getInstance().getNumberOfConnections();
 		while (connections.next()) {
 			System.out.println(connections.getRow());
 		}
