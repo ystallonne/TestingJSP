@@ -155,6 +155,7 @@ public class UserDAO {
 		return users;
 	}
 	
+	@SuppressWarnings("unused")
 	public int getCount(String tableName){
 
 		int count = 0;

@@ -1,5 +1,10 @@
 <%@page import="db.DBConnection"%>
 <jsp:useBean id="ldap" scope="session" class="ldap.LDAPAuthenticate" />
+
+    <jsp:include page="NewFile.jsp">
+    <jsp:param name="userType" value="Student" />
+    </jsp:include>
+
 <%
 	session.invalidate();
 	String error = request.getParameter("error");

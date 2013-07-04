@@ -1,58 +1,20 @@
 package model;
 
+import java.sql.Date;
+import java.util.ArrayList;
+
 public class User {
 	private String userID;
 	private String name;
 	private String lastname;
-	private String userLevel;
-	private String userType;
+	private String nickname;
+	private boolean isBannedFromSystem;
+	private String comment; // Comment regarding the reason why user was banned from the system.
+	private boolean isActive;
+	private boolean isBanned; // User is banned from a class-section.
+	private ArrayList settings; // Auto start audio; auto start video; show language selector; default language.
+	private Date lastLogin;
 	private boolean isLDAP;
-
-	public String getUserID() {
-		return userID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getUserLevel() {
-		return userLevel;
-	}
-
-	public void setUserLevel(String userLevel) {
-		this.userLevel = userLevel;
-	}
-
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
-
-	public boolean isLDAP() {
-		return isLDAP;
-	}
-
-	public void setLDAP(boolean isLDAP) {
-		this.isLDAP = isLDAP;
-	}
+	private String userType;
+	private String userLevel;
 }
